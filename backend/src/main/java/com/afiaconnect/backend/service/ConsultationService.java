@@ -11,4 +11,5 @@ public interface ConsultationService {
     Consultation getConsultationById(UUID id);
     Consultation updateStatus(UUID id, String status, String notes);
     List<Consultation> getDoctorConsultations(String doctorEmail);
+    List<Consultation> getInitiatedConsultations(String initiatedByEmail);
 }

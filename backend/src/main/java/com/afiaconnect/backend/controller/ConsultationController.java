@@ -37,6 +37,14 @@ public class ConsultationController {
                 consultationService.getDoctorConsultations(userDetails.getUsername())));
     }
 
+    @GetMapping("/initiated")
+    @PreAuthorize("hasAnyRole('CHW','Nurse')")
+    public ResponseEntity<ApiResponse<List<Consultation>>> initiatedConsultations(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(ApiResponse.success(
+                consultationService.getInitiatedConsultations(userDetails.getUsername())));
+    }
+
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<ApiResponse<List<Consultation>>> getByPatient(@PathVariable UUID patientId) {
         return ResponseEntity.ok(ApiResponse.success(

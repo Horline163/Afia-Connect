@@ -62,4 +62,11 @@ public class ConsultationServiceImpl implements ConsultationService {
                 userRepository.findByEmail(doctorEmail)
                         .orElseThrow(() -> new ResourceNotFoundException("Doctor not found")));
     }
+
+    @Override
+    public List<Consultation> getInitiatedConsultations(String initiatedByEmail) {
+        return consultationRepository.findByInitiatedByOrderByScheduledTimeDesc(
+                userRepository.findByEmail(initiatedByEmail)
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+    }
 }

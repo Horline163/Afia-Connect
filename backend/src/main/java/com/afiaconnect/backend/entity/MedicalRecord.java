@@ -38,8 +38,10 @@ public class MedicalRecord {
     private Map<String, Object> vitals;
 
     private String diagnosisNotes;
+    @Column(name = "icd10_code")
     private String icd10Code;
 
     @ManyToOne
     @JoinColumn(name = "facility_id")
     private HealthFacility facility;
+}

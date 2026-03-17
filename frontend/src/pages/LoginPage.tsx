@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import loginImage from "@/assets/hospital-login.jpg";
+import { useAuth } from "@/hooks/use-auth";
+import { useToast } from "@/hooks/use-toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -9,10 +11,18 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("chw");
   const navigate = useNavigate();
+  const { login, isLoading } = useAuth();
+  const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/dashboard");
+    try {
+      await login(email, password);
+      navigate("/dashboard");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to sign in";
+      toast({ title: "Login failed", description: message, variant: "destructive" });
+    }
   };
 
   return (
@@ -134,9 +144,10 @@ const LoginPage = () => {
 
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full py-3 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded-lg hover:opacity-90 transition-opacity"
             >
-              Sign In
+              {isLoading ? "Signing In..." : "Sign In"}
             </button>
           </form>
 

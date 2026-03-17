@@ -8,6 +8,7 @@ import com.afiaconnect.backend.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasRole('Administrator')")
     public ResponseEntity<ApiResponse<User>> register(@RequestBody User user,
                                                        @RequestParam String password) {
         User created = authService.register(user, password);
@@ -33,6 +35,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<User>> getMe(@AuthenticationPrincipal UserDetails userDetails) {
         User user = authService.getMe(userDetails.getUsername());
         return ResponseEntity.ok(ApiResponse.success(user));

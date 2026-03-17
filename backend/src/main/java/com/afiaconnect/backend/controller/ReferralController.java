@@ -30,6 +30,20 @@ public class ReferralController {
         return ResponseEntity.status(201).body(ApiResponse.success("Referral created", referral));
     }
 
+    @GetMapping
+    @PreAuthorize("hasAnyRole('Administrator','Doctor')")
+    public ResponseEntity<ApiResponse<List<Referral>>> getAll() {
+        return ResponseEntity.ok(ApiResponse.success(referralService.getAllReferrals()));
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasAnyRole('CHW','Nurse')")
+    public ResponseEntity<ApiResponse<List<Referral>>> myReferrals(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(ApiResponse.success(
+                referralService.getReferralsByInitiator(userDetails.getUsername())));
+    }
+
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<ApiResponse<List<Referral>>> getByPatient(@PathVariable UUID patientId) {
         return ResponseEntity.ok(ApiResponse.success(referralService.getReferralsByPatient(patientId)));

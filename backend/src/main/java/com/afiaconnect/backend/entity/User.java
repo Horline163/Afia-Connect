@@ -1,5 +1,6 @@
 package com.afiaconnect.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String passwordHash;
 
     @Column(unique = true, nullable = false)
@@ -44,3 +46,4 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime lastLogin;
+}

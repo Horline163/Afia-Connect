@@ -79,4 +79,16 @@ public class ReferralServiceImpl implements ReferralService {
 
         return referralFeedbackRepository.save(feedback);
     }
+
+    @Override
+    public List<Referral> getReferralsByInitiator(String initiatedByEmail) {
+        User user = userRepository.findByEmail(initiatedByEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return referralRepository.findByInitiatedByOrderByCreatedAtDesc(user);
+    }
+
+    @Override
+    public List<Referral> getAllReferrals() {
+        return referralRepository.findAll();
+    }
 }

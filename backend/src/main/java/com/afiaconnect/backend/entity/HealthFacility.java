@@ -24,3 +24,4 @@ public class HealthFacility {
     private String province;
     private String gpsCoordinates;
     private String contactPhone;
+}
